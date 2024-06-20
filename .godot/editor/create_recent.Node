@@ -1,0 +1,14 @@
+Label
+ColorRect
+CanvasLayer
+CollisionShape2D
+Node
+Sprite2D
+Area2D
+MarginContainer
+Control
+Button
+VBoxContainer
+PanelContainer
+TextEdit
+AudioStreamPlayer2D

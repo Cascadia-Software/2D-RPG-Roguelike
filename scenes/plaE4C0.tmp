@@ -1,0 +1,71 @@
+[gd_scene load_steps=10 format=3 uid="uid://dvhfkmbbfnrdx"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_qoq5u"]
+[ext_resource type="Texture2D" uid="uid://bbov4b2cgf3pb" path="res://assets/sprites/skeleton.png" id="1_vmv4v"]
+[ext_resource type="Texture2D" uid="uid://6d14rwis123b" path="res://assets/sprites/skeleton_walk.png" id="2_sbs8r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfmso"]
+atlas = ExtResource("1_vmv4v")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21qpu"]
+atlas = ExtResource("1_vmv4v")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_annxc"]
+atlas = ExtResource("2_sbs8r")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itdue"]
+atlas = ExtResource("2_sbs8r")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_etjmc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mfmso")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21qpu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_annxc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itdue")
+}],
+"loop": true,
+"name": &"run",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fl3vs"]
+size = Vector2(10, 10)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_qoq5u")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_etjmc")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.183811
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_fl3vs")
+
+[node name="AttackCooldown" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.5
+
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_speed_timeout"]
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]

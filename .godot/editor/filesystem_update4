@@ -1,0 +1,7 @@
+res://scenes/game.tscn
+res://scripts/player.gd
+res://scenes/player.tscn
+res://scenes/tilemap.tscn
+res://scenes/melee_attack.tscn
+res://scenes/main_menu.tscn
+res://scenes/pause_menu.tscn

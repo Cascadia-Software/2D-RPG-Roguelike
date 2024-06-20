@@ -1,0 +1,114 @@
+[gd_scene load_steps=11 format=3 uid="uid://dvhfkmbbfnrdx"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_qoq5u"]
+[ext_resource type="Texture2D" uid="uid://bbov4b2cgf3pb" path="res://assets/sprites/entities/skeleton.png" id="2_eiiw8"]
+[ext_resource type="Texture2D" uid="uid://6d14rwis123b" path="res://assets/sprites/entities/skeleton_walk.png" id="3_t3ky6"]
+[ext_resource type="PackedScene" uid="uid://b22kv3emi2dx2" path="res://scenes/melee_attack.tscn" id="4_e07fy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfmso"]
+atlas = ExtResource("2_eiiw8")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21qpu"]
+atlas = ExtResource("2_eiiw8")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_annxc"]
+atlas = ExtResource("3_t3ky6")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itdue"]
+atlas = ExtResource("3_t3ky6")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_etjmc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mfmso")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21qpu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_annxc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itdue")
+}],
+"loop": true,
+"name": &"run",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fl3vs"]
+size = Vector2(10, 10)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_qoq5u")
+
+[node name="Sprites" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_etjmc")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.818049
+offset = Vector2(0, -8)
+
+[node name="Hurtbox" type="CollisionShape2D" parent="." groups=["Player"]]
+shape = SubResource("RectangleShape2D_fl3vs")
+
+[node name="AttackCooldown" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 8)
+zoom = Vector2(3, 3)
+limit_left = -232
+limit_top = -264
+limit_right = 232
+limit_bottom = 232
+
+[node name="MeleeAttack" parent="." instance=ExtResource("4_e07fy")]
+
+[node name="InteractUI" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="InteractUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -50.0
+offset_right = 150.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.12549, 0.501961, 0.12549, 1)
+
+[node name="Label" type="Label" parent="InteractUI/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -136.5
+offset_top = -17.0
+offset_right = 136.5
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Press [Space] to pick up"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]

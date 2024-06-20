@@ -1,0 +1,3 @@
+WEAPON
+ITEM
+Translation
